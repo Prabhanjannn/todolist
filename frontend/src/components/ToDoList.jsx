@@ -1,4 +1,4 @@
-import TodoItem from "./TodoItem";
+import TodoItem from "./ToDoitem";  // ✅
 
 export default function TodoList({ todos, onDelete, onUpdate }) {
     if (todos.length === 0)
