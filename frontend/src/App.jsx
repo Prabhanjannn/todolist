@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import TodoForm from "./components/TodoForm";
-import TodoList from "./components/TodoList";
+import TodoForm from "./components/ToDoForm";  // ✅
+import TodoList from "./components/ToDoList";  // ✅
 import "./index.css";
 
 const API = "http://localhost:5000/api/todos";
