@@ -1,33 +1,32 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import TodoForm from "./components/ToDoForm";  // ✅
-import TodoList from "./components/ToDoList";  // ✅
+import TodoForm from "./components/ToDoForm";
+import TodoList from "./components/ToDoList";
 import "./index.css";
 
-const API = "http://localhost:5000/api/todos";
-
 export default function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const saved = localStorage.getItem("todos");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  const fetchTodos = async () => {
-    const res = await axios.get(API);
-    setTodos(res.data);
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+  const addTodo = (title) => {
+    const newTodo = {
+      id: Date.now(),
+      title,
+      completed: false,
+    };
+    setTodos([newTodo, ...todos]);
   };
 
-  useEffect(() => { fetchTodos(); }, []);
-
-  const addTodo = async (title) => {
-    const res = await axios.post(API, { title });
-    setTodos([res.data, ...todos]);
-  };
-
-  const deleteTodo = async (id) => {
-    await axios.delete(`${API}/${id}`);
+  const deleteTodo = (id) => {
     setTodos(todos.filter((t) => t.id !== id));
   };
 
-  const updateTodo = async (id, data) => {
-    await axios.put(`${API}/${id}`, data);
+  const updateTodo = (id, data) => {
     setTodos(todos.map((t) => (t.id === id ? { ...t, ...data } : t)));
   };
 
